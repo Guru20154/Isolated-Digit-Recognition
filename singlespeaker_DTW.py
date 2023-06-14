@@ -88,7 +88,6 @@ def main():
         j=j+1;
 
     accuracy = evaluate_accuracy(R)
-    print("Accuracy:", accuracy)
-    print(accuracy/j)
+    print("Accuracy:", accuracy/j)
 if __name__ == '__main__':
     main()

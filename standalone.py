@@ -15,6 +15,24 @@ def extract_frames(audio_data, window_size, stride):
 
     return frames
 
+def frame_retrieve_train(drec, window_size, stride):
+    A = []
+    label_name = []
+    for filename in os.listdir(drec):
+        path = drec + "/" + filename
+        audio_data, sample_rate = librosa.load(path)
+        frames = extract_frames(audio_data, window_size, stride)
+        A.append(frames)
+        label_name.append(filename.rsplit(".", 1)[0])
+    return A, label_name
+
+def frame_retrieve_test(sample_rate, window_size, stride):
+    A_test=[]
+    for arg in sys.argv[1:]:
+        audio_data, _ = librosa.load(arg, sr=sample_rate)
+        frames = extract_frames(audio_data, window_size, stride)
+        A_test.append(frames)
+
 def extract_mfcc_features(frames, sample_rate):
     mfcc_features = []
     for frame in frames:
@@ -47,20 +65,9 @@ def main():
     stride = 120
     sample_rate = 22050
 
-    A_train = []
-    label_name_train = []
-    for filename in os.listdir(train_drec):
-        path = train_drec + "/" + filename
-        audio_data, sample_rate = librosa.load(path)
-        frames = extract_frames(audio_data, window_size, stride)
-        A_train.append(frames)
-        label_name_train.append(filename.rsplit(".", 1)[0])
-
-    A_test = []
-    for arg in sys.argv[1:]:
-        audio_data, _ = librosa.load(arg, sr=sample_rate)
-        frames = extract_frames(audio_data, window_size, stride)
-        A_test.append(frames)
+    A_train,label_name_train = frame_retrieve_train(train_drec, window_size, stride)
+    A_test = frame_retrieve_test(sample_rate, window_size, stride)
+    
     
     mfcc_train = extract_mfcc_features(np.array(A_train), sample_rate)
     mfcc_test = extract_mfcc_features(np.array(A_test), sample_rate)
