@@ -81,7 +81,7 @@ def main():
 
     #extracting frames for each train and test file
     A_train ,label_name_train,no_label = frame_retrieve(train_drec,window_size,stride)
-    A_test ,label_name_test = frame_retrieve(test_drec,window_size,stride)
+    A_test ,label_name_test,_ = frame_retrieve(test_drec,window_size,stride)
 
     #mfcc features
     mfcc_train = extract_mfcc_features(np.array(A_train), sample_rate)
@@ -100,11 +100,17 @@ def main():
     print("Accuracy:", accuracy/j)
 
     #plotting distances for each number
+    fig = plt.figure(figsize =(10, 7))
     plt.bar(no_label,distances[0],color = 'maroon')
     plt.xlabel("Speaker")
     plt.ylabel("DTW distances")
     plt.title("Distances of " + str(label_name_test[0]) + " with test set")
     plt.show()
+    
+    fig = plt.figure(figsize =(10, 7))
+    plt.boxplot(distances[0])
+    plt.show()
+
 
 
 if __name__ == '__main__':

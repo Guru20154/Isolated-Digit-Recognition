@@ -93,11 +93,16 @@ def main():
     accuracy = evaluate_accuracy(R)
     print("Accuracy:", accuracy/j)#accuracy
 
-    #plotting distances for each number
+#plotting distances for each number
+    fig = plt.figure(figsize =(10, 7))
     plt.bar(no_label,distances[0],color = 'maroon')
     plt.xlabel("Speaker")
     plt.ylabel("DTW distances")
     plt.title("Distances of " + str(label_name_test[0]) + " with test set")
+    plt.show()
+    
+    fig = plt.figure(figsize =(10, 7))
+    plt.boxplot(distances[0])
     plt.show()
 
     
